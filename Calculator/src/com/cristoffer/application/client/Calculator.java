@@ -20,12 +20,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class Calculator implements EntryPoint {
 	private VerticalPanel mainPanel = new VerticalPanel();
-	private VerticalPanel calculatorPanel = new VerticalPanel();
+
 	private HorizontalPanel addPanel = new HorizontalPanel();
-	private HorizontalPanel equationPanel, buttonRowOne, buttonRowTwo, buttonRowThree, buttonRowFour, buttonRowFive;
 	private TextBox operand1TextBox = new TextBox();
 	private TextBox operand2TextBox = new TextBox();
-	private TextBox equationBox = new TextBox();
 	private Button calculateButton = new Button("Calculate");
 	private MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
 	private SuggestBox operatorTextBox = new SuggestBox(oracle);
@@ -39,8 +37,7 @@ public class Calculator implements EntryPoint {
 	 * Entry point method.
 	 */
 	public void onModuleLoad() {
-		
-		equationPanel = new HorizontalPanel();
+
 //		buttonRowOne = new HorizontalPanel();
 //		buttonRowTwo = new HorizontalPanel();
 //		buttonRowThree = new HorizontalPanel();
@@ -97,6 +94,8 @@ public class Calculator implements EntryPoint {
 	private void calculate() {
 
 		final String operator = operatorTextBox.getText().trim();
+		Calculations calc = new Calculations();
+		double answer;
 		calculateButton.setFocus(true);
 		if ((!isValidOperator(operator)) 
 				|| !isDouble(operand1TextBox.getText().trim()) || !isDouble(operand2TextBox.getText().trim())) {
@@ -104,34 +103,11 @@ public class Calculator implements EntryPoint {
 					+ "double");
 			return;
 		}
-
 		double operand1 = Double.parseDouble(operand1TextBox.getText());
 		double operand2 = Double.parseDouble(operand2TextBox.getText());
-		double answer;
 		int row = answerTable.getRowCount();
+		answer = calc.Calculate(operand1, operand2, operator);
 
-		// Multiplication
-		if (operator.equals("*")) {
-			answer = multiplication(operand1, operand2);
-//			Window.alert("The answer is: " + answer);
-		}
-
-		// Modulo
-		else if (operator.equals("%")) {
-			answer = operand1 % operand2;
-//			Window.alert("The answer is: " + answer);
-		}
-
-		// addition
-		else if (operator.equals("/")) {
-			answer = division(operand1, operand2);
-//			Window.alert("The answer is: " + answer);
-		}
-		
-		else {
-			answer = addition(operand1, operand2);
-		}
-		
 		if (row < 10) {
 		answerTable.setText(row, 0, Double.toString(operand1) + " " + operator + " " + Double.toString(operand2));
 		answerTable.setText(row, 1, Double.toString(answer));
@@ -153,25 +129,6 @@ public class Calculator implements EntryPoint {
 		else {
 			return false;
 		}
-	}
-	private double addition(double operandOne, double operandTwo) {
-		return operandOne + operandTwo;
-	}
-
-	private double subtraction(double operandOne, double operandTwo) {
-		return operandOne - operandTwo;
-	}
-
-	private double multiplication(double operandOne, double operandTwo) {
-		return operandOne * operandTwo;
-	}
-
-	private double division(double operandOne, double operandTwo) {
-		return operandOne / operandTwo;
-	}
-
-	private double modulus(double operandOne, double operandTwo) {
-		return operandOne % operandTwo;
 	}
 
 	private ClickHandler handleClick() {
