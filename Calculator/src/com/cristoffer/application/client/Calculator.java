@@ -37,14 +37,13 @@ public class Calculator implements EntryPoint {
 		addPanel.add(operand1TextBox);
 		addPanel.add(operatorTextBox);
 		addPanel.add(operand2TextBox);
-		// TODO Assemble Main panel.
+		
 		mainPanel.add(answerTable);
 		mainPanel.add(addPanel);
 		mainPanel.add(calculatorTable);
 		
-		// TODO Associate the Main panel with the HTML host page.
 		RootPanel.get("calc").add(mainPanel);
-		// TODO Move cursor focus to the input box.
+
 		operand1TextBox.setReadOnly(true);
 		operand2TextBox.setReadOnly(true);
 		operatorTextBox.setReadOnly(true);
