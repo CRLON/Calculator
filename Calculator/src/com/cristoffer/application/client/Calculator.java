@@ -55,6 +55,7 @@ public class Calculator implements EntryPoint {
 		operand1TextBox.setStyleName("operatorBox");
 		operand2TextBox.setStyleName("operatorBox");
 		operatorTextBox.setStyleName("operatorBox");
+		answerTable.setStyleName("answerTable");
 	}
 
 	private void calculate() {
@@ -131,6 +132,7 @@ public class Calculator implements EntryPoint {
 		answerTable.setText(0, 0, "Equation");
 		answerTable.setText(0, 1, " ");
 		answerTable.setText(0, 2, "Answer");
+		answerTable.setWidth("320px");
 		for (int i = 1; i < 10; i++) {
 			answerTable.setText(i, 1, "=");
 		}

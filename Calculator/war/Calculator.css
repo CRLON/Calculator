@@ -1,8 +1,3 @@
-.calcButton {
-	font-size: 40px;
-	font-style: oblique;
-}
-
 .firstButtonRow {
 	font-size: 40px;
 	background-color: #ABABAB;
@@ -40,4 +35,13 @@
 
 .operatorBox {
 	font-size: 20px;
+	max-width: 150px;
+}
+
+.answerTable {
+	text-align: center;
+}
+
+table td {   
+    font: 18px Arial, sans-serif !important;
 }
