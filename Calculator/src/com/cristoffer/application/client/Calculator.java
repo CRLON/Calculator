@@ -4,6 +4,9 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -13,6 +16,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -36,25 +40,15 @@ public class Calculator implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		createButtons();
-		answerTable.setText(0, 0, "Equation");
-		answerTable.setText(0, 1, " ");
-		answerTable.setText(0, 2, "Answer");
-		
-		for (int i = 1; i < 10; i++)
-			answerTable.setText(i, 0, "-");
-		
-		//Sets the zero and equals buttons to span over 2 columns each
-		calculatorTable.getFlexCellFormatter().setColSpan(4, 0, 2);
-		calculatorTable.getFlexCellFormatter().setColSpan(4, 1, 3);
-
+		createAnswerTable();
 		addPanel.add(operand1TextBox);
 		addPanel.add(operatorTextBox);
 		addPanel.add(operand2TextBox);
-		addPanel.add(calculatorTable);
 		
 		// TODO Assemble Main panel.
 		mainPanel.add(answerTable);
 		mainPanel.add(addPanel);
+		mainPanel.add(calculatorTable);
 		// TODO Associate the Main panel with the HTML host page.
 		RootPanel.get("calc").add(mainPanel);
 		// TODO Move cursor focus to the input box.
@@ -63,6 +57,8 @@ public class Calculator implements EntryPoint {
 		operatorTextBox.setReadOnly(true);
 		operand1TextBox.setFocus(true);
 		operatorTextBox.setWidth("20px");
+		operand1TextBox.addKeyDownHandler(handleKeyDown());
+		operand2TextBox.addKeyDownHandler(handleKeyDown());
 	}
 
 	private void calculate() {
@@ -112,8 +108,20 @@ public class Calculator implements EntryPoint {
 				}
 			}
 		}
+		//Sets the zero and equals buttons to span over 2 columns each
+		calculatorTable.getFlexCellFormatter().setColSpan(4, 0, 2);
+		calculatorTable.getFlexCellFormatter().setColSpan(4, 1, 3);
 	}
 
+	private void createAnswerTable() {
+		answerTable.setText(0, 0, "Equation");
+		answerTable.setText(0, 1, " ");
+		answerTable.setText(0, 2, "Answer");
+		
+		for (int i = 1; i < 10; i++)
+			answerTable.setText(i, 0, "-");
+	}
+	
 	private boolean isOperator(String operator) {
 		if (operator.equals("*") || operator.equals("+") || operator.equals("-") ||
 				operator.equals("/") || operator.equals("%")) {
@@ -131,30 +139,46 @@ public class Calculator implements EntryPoint {
 		operand1TextBox.setFocus(true);
 	}
 
+	private void onButtonPress(String buttonText) {
+		if (buttonText.equals("C")) {
+			clearCalc();
+		}
+		else if (buttonText.equals("=")) {
+			calculate();
+			clearCalc();
+		}
+		else if(isOperator(buttonText) && !isOperator(operatorTextBox.getText())) {
+			operatorTextBox.setText(buttonText);
+			operand2TextBox.setFocus(true);
+		}
+		else if (!isOperator(buttonText) && !isOperator(operatorTextBox.getText())) {
+			operand1TextBox.setText(operand1TextBox.getText() + buttonText);
+			operand1TextBox.setFocus(true);
+		}
+		else if (!isOperator(buttonText) && isOperator(operatorTextBox.getText())) {
+			operand2TextBox.setText(operand2TextBox.getText() + buttonText);
+			operand2TextBox.setFocus(true);
+		}
+	}
+
+	private KeyDownHandler handleKeyDown() {
+		return new KeyDownHandler() {
+
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				NumpadKeyConvert numpadKey = new NumpadKeyConvert();
+				onButtonPress(numpadKey.convertKey(event));
+			}
+		};
+	}
+
 	private ClickHandler handleClick() {
 		return new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
 				Button btn = (Button)event.getSource();
-				String buttonText = btn.getText();
-				if (buttonText.equals("C")) {
-					clearCalc();
-				}
-				else if (buttonText.equals("=")) {
-					calculate();
-					clearCalc();
-				}
-				else if(isOperator(buttonText) && !isOperator(operatorTextBox.getText())) {
-					operatorTextBox.setText(buttonText);
-					operand2TextBox.setFocus(true);
-				}
-				else if (!isOperator(buttonText) && !isOperator(operatorTextBox.getText())) {
-					operand1TextBox.setText(operand1TextBox.getText() + buttonText);
-				}
-				else if (!isOperator(buttonText) && isOperator(operatorTextBox.getText())) {
-					operand2TextBox.setText(operand2TextBox.getText() + buttonText);
-				}
+				onButtonPress(btn.getText());
 		}
 	};
 }
