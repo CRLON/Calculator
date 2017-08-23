@@ -57,6 +57,9 @@ public class NumpadKeyConvert {
 		case KeyCodes.KEY_NUM_PERIOD:
 			keyPressedString = ".";
 			break;
+		case KeyCodes.KEY_BACKSPACE:
+			keyPressedString = "C";
+			break;
 		}
 		return keyPressedString;
 	}

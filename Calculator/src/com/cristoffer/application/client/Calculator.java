@@ -1,19 +1,15 @@
 package com.cristoffer.application.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -32,9 +28,6 @@ public class Calculator implements EntryPoint {
 	private FlexTable calculatorTable = new FlexTable();
 	private String[][] calculatorButtons = { { "C", ".", "%", "/" }, { "7", "8", "9", "*" }, { "4", "5", "6", "-" },
 			{ "1", "2", "3", "+" }, { "0", "=" } };
-	// private HashMap<CalculatorPanels, HorizontalPanel> panelMap = new
-	// HashMap<>();
-
 	/**
 	 * Entry point method.
 	 */
@@ -44,11 +37,11 @@ public class Calculator implements EntryPoint {
 		addPanel.add(operand1TextBox);
 		addPanel.add(operatorTextBox);
 		addPanel.add(operand2TextBox);
-
 		// TODO Assemble Main panel.
 		mainPanel.add(answerTable);
 		mainPanel.add(addPanel);
 		mainPanel.add(calculatorTable);
+		
 		// TODO Associate the Main panel with the HTML host page.
 		RootPanel.get("calc").add(mainPanel);
 		// TODO Move cursor focus to the input box.
@@ -59,6 +52,9 @@ public class Calculator implements EntryPoint {
 		operatorTextBox.setWidth("20px");
 		operand1TextBox.addKeyDownHandler(handleKeyDown());
 		operand2TextBox.addKeyDownHandler(handleKeyDown());
+		operand1TextBox.setStyleName("operatorBox");
+		operand2TextBox.setStyleName("operatorBox");
+		operatorTextBox.setStyleName("operatorBox");
 	}
 
 	private void calculate() {
@@ -100,13 +96,29 @@ public class Calculator implements EntryPoint {
 					calculatorTable.setWidget(i, 1, new Button(calculatorButtons[i][1], handleClick()));
 					calculatorTable.getWidget(i, 0).setSize("100%", "80px");
 					calculatorTable.getWidget(i, 1).setSize("100%", "80px");
-					calculatorTable.getWidget(i, 0).setStyleName("calcButton");
-					calculatorTable.getWidget(i, 1).setStyleName("calcButton");
+//					calculatorTable.getWidget(i, 0).setStyleName("calcButton");
+//					calculatorTable.getWidget(i, 1).setStyleName("calcButton");
+					calculatorTable.getWidget(i, 0).setStyleName("fifthButtonRow");
+					calculatorTable.getWidget(i, 1).setStyleName("fifthButtonRow");
+					
 					break;
 				} else {
 					calculatorTable.setWidget(i, j, new Button(calculatorButtons[i][j], handleClick()));
 					calculatorTable.getWidget(i, j).setSize("80px", "80px");
 					calculatorTable.getWidget(i, j).setStyleName("calcButton");
+					if (i == 0) {
+						calculatorTable.getWidget(i, j).setStyleName("firstButtonRow");
+					}
+					else if (i == 1) {
+						calculatorTable.getWidget(i, j).setStyleName("secondButtonRow");
+					}
+					else if (i == 2) {
+						calculatorTable.getWidget(i, j).setStyleName("thirdButtonRow");
+					}
+					else if (i == 3) {
+						calculatorTable.getWidget(i, j).setStyleName("fourthButtonRow");
+					}
+					
 				}
 			}
 		}
@@ -119,9 +131,9 @@ public class Calculator implements EntryPoint {
 		answerTable.setText(0, 0, "Equation");
 		answerTable.setText(0, 1, " ");
 		answerTable.setText(0, 2, "Answer");
-
-		for (int i = 1; i < 10; i++)
-			answerTable.setText(i, 0, "-");
+		for (int i = 1; i < 10; i++) {
+			answerTable.setText(i, 1, "=");
+		}
 	}
 
 	private boolean isOperator(String operator) {

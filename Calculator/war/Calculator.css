@@ -2,3 +2,42 @@
 	font-size: 40px;
 	font-style: oblique;
 }
+
+.firstButtonRow {
+	font-size: 40px;
+	background-color: #ABABAB;
+	border: 1px;
+	border-radius: 12px;
+}
+	
+.secondButtonRow {
+	font-size: 40px;
+	background-color: #B5B5B5;
+	border-radius: 12px;
+	border: 1px;
+}
+	
+.thirdButtonRow {
+	font-size: 40px;
+	background-color: #C0C0C0;
+	border-radius: 12px;
+	border: 1px;
+}
+	
+.fourthButtonRow {
+	font-size: 40px;
+	background-color: #CBCBCB;
+	border-radius: 12px;
+	border: 1px;
+}
+	
+.fifthButtonRow {
+	font-size: 40px;
+	background-color: #D6D6D6;
+	border-radius: 12px;
+	border: 1px;
+}
+
+.operatorBox {
+	font-size: 20px;
+}
