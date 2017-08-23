@@ -65,7 +65,6 @@ public class Calculator implements EntryPoint {
 
 		final String operator = operatorTextBox.getText().trim();
 		Calculations calc = new Calculations();
-		double answer;
 		if (!isDouble(operand1TextBox.getText().trim()) || !isDouble(operand2TextBox.getText().trim())) {
 			Window.alert("You have entered a non valid binary operator or one of the operands is not an integer or a "
 					+ "double");
@@ -73,7 +72,7 @@ public class Calculator implements EntryPoint {
 		}
 		double operand1 = Double.parseDouble(operand1TextBox.getText());
 		double operand2 = Double.parseDouble(operand2TextBox.getText());
-		answer = calc.Calculate(operand1, operand2, operator);
+		double answer = calc.Calculate(operand1, operand2, operator);
 		updateAnswerTable(operand1, operator, operand2, answer);
 
 	}
